@@ -1,0 +1,172 @@
+<html>
+<head>
+    <title>Ball Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-image: url('imgs/court.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            padding-top: 60px;
+        }
+
+        .overlay {
+            background: rgba(0, 4, 10, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            color: white;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        select {
+            border: 2px solid #f1f1f1;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            outline: none;
+        }
+
+        select:hover {
+            border-color: #00bcd4;
+        }
+
+        .btn-primary {
+            background-color: #4088d1;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto 0;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background-color: #4070ff;
+        }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+    <script>
+        // Load header from an external file
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading the HTML file:', error));
+    </script>
+
+    <div class="overlay">
+        <div class="header-text">Select Teams for the Game</div>
+        <div class="mb-4">
+            <label for="team1" class="block mb-2 font-medium">Team 1:</label>
+            <select id="team1" name="team1" class="w-full p-3">
+                <option value="">Loading teams...</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="team2" class="block mb-2 font-medium">Team 2:</label>
+            <select id="team2" name="team2" class="w-full p-3">
+                <option value="">Loading teams...</option>
+            </select>
+        </div>
+
+        <a id="startGameButton" href="#" class="btn-primary">Start Game</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const teamDropdown1 = document.getElementById('team1');
+            const teamDropdown2 = document.getElementById('team2');
+            const startGameButton = document.getElementById('startGameButton');
+
+            // Fetch the team data from the existing PHP function
+            fetch('get_teamstats.php') // Replace with the actual path
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched Team Data:', data);
+                    teamDropdown1.innerHTML = ''; // Clear existing options
+                    teamDropdown2.innerHTML = ''; // Clear existing options
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        // Add a default "Select Team" option
+                        const defaultOption1 = document.createElement('option');
+                        const defaultOption2 = document.createElement('option');
+                        defaultOption1.value = '';
+                        defaultOption1.textContent = 'Select Team';
+                        defaultOption2.value = '';
+                        defaultOption2.textContent = 'Select Team';
+                        teamDropdown1.appendChild(defaultOption1);
+                        teamDropdown2.appendChild(defaultOption2);
+
+                        // Populate dropdowns
+                        data.forEach(team => {
+                            if (team.TeamName) {
+                                const option1 = document.createElement('option');
+                                const option2 = document.createElement('option');
+                                option1.value = team.TeamName;
+                                option1.textContent = team.TeamName;
+                                option2.value = team.TeamName;
+                                option2.textContent = team.TeamName;
+                                teamDropdown1.appendChild(option1);
+                                teamDropdown2.appendChild(option2);
+                            } else {
+                                console.error('Team object missing TeamName property:', team);
+                            }
+                        });
+                    } else {
+                        const errorOption1 = document.createElement('option');
+                        const errorOption2 = document.createElement('option');
+                        errorOption1.value = '';
+                        errorOption1.textContent = 'No teams available';
+                        errorOption2.value = '';
+                        errorOption2.textContent = 'No teams available';
+                        teamDropdown1.appendChild(errorOption1);
+                        teamDropdown2.appendChild(errorOption2);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching teams:', error);
+                    teamDropdown1.innerHTML = '<option value="">Error loading teams</option>';
+                    teamDropdown2.innerHTML = '<option value="">Error loading teams</option>';
+                });
+
+            // Handle button click and URL update
+            startGameButton.addEventListener('click', function (event) {
+                const team1 = teamDropdown1.value;
+                const team2 = teamDropdown2.value;
+
+                if (!team1 || !team2) {
+                    alert("Please select both teams before starting the game.");
+                    event.preventDefault();
+                    return;
+                }
+
+                const gameUrl = `gamestats.html?team1=${encodeURIComponent(team1)}&team2=${encodeURIComponent(team2)}`;
+                startGameButton.href = gameUrl;
+            });
+        });
+    </script>
+</body>
+</html>

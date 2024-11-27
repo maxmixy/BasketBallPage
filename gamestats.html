@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .court {
+        background-image: url("imgs/court-diagram.jpg"); /* Replace with your court image */
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 300px;
+        position: relative;
+      }
+
+      .player-marker {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+
+  <div id="header"></div>
+  <script>
+    // Load header from an external file
+    fetch("header.html")
+      .then((response) => response.text())
+      .then((data) => {
+        document.getElementById("header").innerHTML = data;
+      })
+      .catch((error) => console.error("Error loading the HTML file:", error));
+  </script>
+
+  <body class="bg-gray-800 text-white font-sans" style="margin-top: 7rem">
+    <div class="container mx-auto p-4">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Game Tracker</h1>
+        <button
+          id="endGameButton"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        >
+          End Game
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <div class="bg-gray-900 p-4 rounded-lg">
+          <h2 class="text-xl font-semibold">
+            <span id="team1Name"></span>
+            score
+          </h2>
+        </div>
+        <div class="bg-gray-900 p-4 rounded-lg">
+          <h2 class="text-xl font-semibold">
+            <span id="team2Name"></span>
+            score
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-6">
+        <button onclick="updateStat(playerID, 'fieldGoalsMade')">
+          Field Goal Made
+        </button>
+        <button onclick="updateStat(playerID, 'fieldGoalsAttempted')">
+          Field Goal Attempted
+        </button>
+        <button onclick="updateStat(playerID, 'threePointersMade')">
+          3 Pointer Made
+        </button>
+        <button onclick="updateStat(playerID, 'threePointersAttempted')">
+          3 Pointer Attempted
+        </button>
+        <button onclick="updateStat(playerID, 'freeThrowsMade')">
+          Free Throw Made
+        </button>
+        <button onclick="updateStat(playerID, 'freeThrowsAttempted')">
+          Free Throw Attempted
+        </button>
+        <button onclick="updateStat(playerID, 'offensiveRebounds')">
+          Offensive Rebound
+        </button>
+        <button onclick="updateStat(playerID, 'defensiveRebounds')">
+          Defensive Rebound
+        </button>
+        <button onclick="updateStat(playerID, 'assists')">Assist</button>
+        <button onclick="updateStat(playerID, 'turnovers')">Turnover</button>
+        <button onclick="updateStat(playerID, 'steals')">Steal</button>
+        <button onclick="updateStat(playerID, 'blocks')">Block</button>
+        <button onclick="updateStat(playerID, 'personalFouls')">
+          Personal Foul
+        </button>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 mt-4">
+        <div class="bg-gray-900 p-4 rounded-lg">
+          <h2 class="text-xl font-semibold">Team 1 Active Players:</h2>
+          <div id="team1Active" class="grid grid-cols-5 gap-3 mt-4"></div>
+          <button
+            onclick="initiateSubstitution(1)"
+            class="bg-yellow-500 hover:bg-yellow-700 text-white py-2 px-4 rounded mt-4"
+          >
+            Substitute
+          </button>
+        </div>
+        <div class="col-start-3 bg-gray-900 p-4 rounded-lg">
+          <h2 class="text-xl font-semibold">Team 2 Active Players:</h2>
+          <div id="team2Active" class="grid grid-cols-5 gap-3 mt-4"></div>
+          <button
+            onclick="initiateSubstitution(2)"
+            class="bg-yellow-500 hover:bg-yellow-700 text-white py-2 px-4 rounded mt-4"
+          >
+            Substitute
+          </button>
+        </div>
+        <div class="bg-gray-900 p-4 rounded-lg">
+          <h2 class="text-xl font-semibold">
+            Team 1: <span id="team1Name"></span>
+          </h2>
+          <div id="team1Players" class="grid grid-cols-2 gap-4 mt-4"></div>
+        </div>
+
+        <!-- Team 2 Section -->
+        <div class="bg-gray-900 p-4 rounded-lg">
+          <h2 class="col-start-3 text-xl font-semibold">
+            Team 2: <span id="team2Name"></span>
+          </h2>
+          <div id="team2Players" class="grid grid-cols-2 gap-4 mt-4"></div>
+        </div>
+
+        <div
+          class="row-span-2 col-start-2 row-start-1 bg-gray-900 p-4 rounded-lg"
+        >
+          <h2 class="text-xl font-semibold">Action Log</h2>
+          <div
+            id="actionLog"
+            class="mt-2 text-sm overflow-auto h-32 bg-gray-800 p-2 rounded"
+          >
+            <!-- Logs will populate dynamically -->
+          </div>
+        </div>
+      </div>
+      <div class="table-container">
+        <div class="team-name">Team Name</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>PLAYER</th>
+                    <th>PTS</th>
+                    <th>FG</th>
+                    <th>MFG</th>
+                    <th>AFG%</th>
+                    <th>3PM</th>
+                    <th>3PA</th>
+                    <th>3P%</th>
+                    <th>FT</th>
+                    <th>MFT</th>
+                    <th>AFT%</th>
+                    <th>OREB</th>
+                    <th>DREB</th>
+                    <th>REB</th>
+                    <th>AST</th>
+                    <th>TOV</th>
+                    <th>STL</th>
+                    <th>BLK</th>
+                    <th>PF</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    <script>
+      // Parse URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const team1Name = urlParams.get("team1");
+      const team2Name = urlParams.get("team2");
+
+      // Populate team names in the DOM
+      document.getElementById("team1Name").textContent = team1Name;
+      document.getElementById("team2Name").textContent = team2Name;
+
+      // Fetch players for the selected teams
+      fetch(`get_players.php?team1=${team1Name}&team2=${team2Name}`)
+        .then((response) => response.json())
+        .then((players) => {
+          // Separate players by team
+          const team1Players = players.filter(
+            (player) => player.PlayerTeam === team1Name
+          );
+          const team2Players = players.filter(
+            (player) => player.PlayerTeam === team2Name
+          );
+
+          // Populate players for Team 1
+          const team1Container = document.getElementById("team1Players");
+          team1Players.forEach((player) => {
+            const playerStat = document.createElement("button");
+            playerStat.classList.add(
+              "flex",
+              "justify-between",
+              "items-center",
+              "border-b",
+              "border-gray-700",
+              "py-2",
+              "width-100%"
+            );
+            playerStat.innerHTML = `
+                <span>${player.PlayerJersey} || ${player.PlayerFName} ${player.PlayerLName}</span>
+            `;
+            team1Container.appendChild(playerStat);
+          });
+
+          // Populate players for Team 2
+          const team2Container = document.getElementById("team2Players");
+          team2Players.forEach((player) => {
+            const playerStat = document.createElement("button");
+            playerStat.classList.add(
+              "flex",
+              "justify-between",
+              "items-center",
+              "border-b",
+              "border-gray-700",
+              "py-2"
+            );
+            playerStat.innerHTML = `
+                <span>${player.PlayerJersey} || ${player.PlayerFName} ${player.PlayerLName}</span>
+            `;
+            team2Container.appendChild(playerStat);
+          });
+        })
+        .catch((error) => console.error("Error fetching players:", error));
+
+      // Example Action Log
+      const actionLog = document.getElementById("actionLog");
+      const logAction = (message) => {
+        const logEntry = document.createElement("div");
+        logEntry.textContent = message;
+        actionLog.appendChild(logEntry);
+      };
+
+      logAction("Game started!");
+
+      let team1ActivePlayers = [];
+      let team2ActivePlayers = [];
+
+      team1ActivePlayers = [10, 23, 4];
+      team2ActivePlayers = [34, 2];
+
+      let substitutionStep = null;
+      let selectedTeam = null;
+      let playerOut = null;
+      let playerIn = null;
+
+      // Start the substitution process
+      const initiateSubstitution = (team) => {
+        substitutionStep = "selectOut"; // Start substitution process
+        selectedTeam = team; // Set the team
+        alert("Click on an active player to substitute OUT.");
+      };
+
+      // Handle player selection
+      const handlePlayerSelection = (playerNumber, isActive) => {
+        if (substitutionStep === "selectOut" && isActive) {
+          playerOut = playerNumber; // Set the player to be subbed out
+          substitutionStep = "selectIn"; // Move to the next step
+          alert(
+            `Player #${playerOut} selected. Now click on a player to substitute IN.`
+          );
+        } else if (substitutionStep === "selectIn" && !isActive) {
+          playerIn = playerNumber; // Set the player to be subbed in
+          processSubstitution(selectedTeam, playerOut, playerIn);
+          substitutionStep = null; // Reset the flow
+          alert(
+            `Substitution complete! Player #${playerOut} out, Player #${playerIn} in.`
+          );
+        } else {
+          alert("Please follow the substitution process step-by-step.");
+        }
+      };
+
+      // Perform the substitution
+      const processSubstitution = (team, subOut, subIn) => {
+        let activePlayers =
+          team === 1 ? team1ActivePlayers : team2ActivePlayers;
+
+        // Update active players: remove subOut and add subIn
+        const outIndex = activePlayers.indexOf(subOut);
+        if (outIndex > -1) {
+          activePlayers.splice(outIndex, 1); // Remove the outgoing player
+        }
+        activePlayers.push(subIn); // Add the incoming player
+
+        // Update the UI
+        renderActivePlayers();
+      };
+
+      // Render active players dynamically
+      const renderActivePlayers = () => {
+        const team1ActiveList = document.getElementById("team1Active");
+        const team2ActiveList = document.getElementById("team2Active");
+
+        // Clear existing lists
+        team1ActiveList.innerHTML = "";
+        team2ActiveList.innerHTML = "";
+
+        // Render active players for Team 1
+        team1ActivePlayers.forEach((player) => {
+          const listItem = document.createElement("button");
+          listItem.textContent = `#${player}`;
+          listItem.classList.add(
+            "bg-blue-500",
+            "hover:bg-blue-700",
+            "text-white",
+            "py-1",
+            "px-2",
+            "rounded"
+          );
+          listItem.onclick = () => handlePlayerSelection(player, true); // Active players are selectable for "sub out"
+          team1ActiveList.appendChild(listItem);
+        });
+
+        // Render active players for Team 2
+        team2ActivePlayers.forEach((player) => {
+          const listItem = document.createElement("button");
+          listItem.textContent = `#${player}`;
+          listItem.classList.add(
+            "bg-green-500",
+            "hover:bg-green-700",
+            "text-white",
+            "py-1",
+            "px-2",
+            "rounded"
+          );
+          listItem.onclick = () => handlePlayerSelection(player, true); // Active players are selectable for "sub out"
+          team2ActiveList.appendChild(listItem);
+        });
+      };
+
+      // Add event listeners to inactive player buttons dynamically
+      const setupInactivePlayerListeners = (team, containerId, players) => {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ""; // Clear any existing players
+
+        players.forEach((player) => {
+          const playerButton = document.createElement("button");
+          playerButton.textContent = `${player.PlayerJersey} || ${player.PlayerFName} ${player.PlayerLName}`;
+          playerButton.classList.add(
+            "bg-gray-500",
+            "hover:bg-gray-700",
+            "text-white",
+            "py-1",
+            "px-2",
+            "rounded",
+            "my-1"
+          );
+          playerButton.onclick = () =>
+            handlePlayerSelection(player.PlayerJersey, false); // Inactive players are selectable for "sub in"
+          container.appendChild(playerButton);
+        });
+      };
+
+      // Fetch players and populate the UI
+      fetch(`get_players.php?team1=${team1Name}&team2=${team2Name}`)
+        .then((response) => response.json())
+        .then((players) => {
+          const team1Players = players.filter(
+            (player) => player.PlayerTeam === team1Name
+          );
+          const team2Players = players.filter(
+            (player) => player.PlayerTeam === team2Name
+          );
+
+          // Setup inactive player buttons
+          setupInactivePlayerListeners(1, "team1Players", team1Players);
+          setupInactivePlayerListeners(2, "team2Players", team2Players);
+        })
+        .catch((error) => console.error("Error fetching players:", error));
+
+      // Initial render
+      renderActivePlayers();
+    </script>
+  </body>
+</html>
