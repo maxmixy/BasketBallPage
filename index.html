@@ -1,0 +1,70 @@
+<html>
+<head>
+    <title>Ball Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-image: url('imgs/court.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(3px);
+            border-radius: 15px;
+            padding-top: 20px;
+            width: 450px;
+            text-align: center;
+            color: white;
+        }
+        .overlay2 {
+            background: rgba(0, 0, 0, .1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+        .overlay h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .overlay p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .overlay a {
+            display: block;
+            margin: 10px 0;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+        }
+        .overlay .footer {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, .8), #753200);
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen">
+    <div class="overlay">
+        <h1 class="font-bold">BALL CENTER <br> Get your game on, step up</h1>
+        <div class="overlay2">
+            <a href="teamview.html">Manage team</a>
+            <a href="teamstats.html">Team stats</a>
+            <a href="highlights.html">Player highlights</a>
+            <a href="brackets.html">Generate Tournament Brackets</a>
+        </div>
+        
+        <div class="footer"><br>
+            TOGETHER, WE BALL.<br>
+            IN BALL, WE ARE TOGETHER
+            <br>
+        </div>
+    </div>
+</body>
+</html>

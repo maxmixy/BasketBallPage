@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .skewed {
+            transform: skewX(40deg);
+        }
+        .unskewed {
+            transform: skewX(-40deg);
+            display: inline-block;
+        }
+        header {
+            position: fixed; /* Fixes the header to the top of the viewport */
+            top: 0; /* Positions it at the top */
+            left: 0; /* Aligns it to the left */
+            width: 100%; /* Makes the header span the entire width of the page */
+            color: white; /* Text color */
+            z-index: 1000; /* Ensures the header is above other content */
+        }
+        
+        body {
+            margin-top: 60px; /* Add margin to the top of the body to prevent content from being hidden behind the header */
+        }
+        .logo {
+            mix-blend-mode: screen; 
+            width: 158px; /* Adjust logo size */
+            margin-right: 20px; /* Add some space between the logo and buttons */
+        }
+        .button-container {
+            position: relative; /* Set position to relative for absolute positioning of buttons */
+        }
+        .a{
+            padding-left: 10rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="" >
+        <div class="flex items-center" style="background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);">
+            <div class="flex items-center">
+                <img src="imgs/logo.png" alt="Ball Center" class="logo"/> 
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex space-x-4"> 
+                    <div class="flex flex-row">
+                        <div class="skewed bg-orange-500 p-2 padding-left: 10rem;">
+                            <a class="unskewed text-white text-lg font-semibold" href="teamview.html">
+                                &nbsp;&nbsp;&nbsp;&nbsp;Manage Teams&nbsp;&nbsp;&nbsp;&nbsp;
+                            </a>
+                        </div>
+                        <div class="skewed bg-orange-600 p-2">
+                            <a class="unskewed text-white text-lg font-semibold" href="teamstats.html">
+                                &nbsp;&nbsp;&nbsp;&nbsp;Team Stats&nbsp;&nbsp;&nbsp;&nbsp;
+                            </a>
+                        </div>
+                        <div class="skewed bg-orange-700 p-2">
+                            <a class="unskewed text-white text-lg font-semibold" href="registration.php">
+                                &nbsp;&nbsp;&nbsp;&nbsp;Register Player&nbsp;&nbsp;&nbsp;&nbsp;
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="flex flex-row">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;<div class="skewed bg-blue-600 p-2">
+                        <a class="unskewed text-white text-lg font-semibold" href="highlights.html">
+                            &nbsp;&nbsp;&nbsp;&nbsp;Player Highlights&nbsp;&nbsp;&nbsp;&nbsp;
+                        </a>
+                    </div>
+                    <div class="skewed bg-blue-900 p-2">
+                        <a class="unskewed text-white text-lg font-semibold" href="brackets.html">
+                            &nbsp;&nbsp;&nbsp;&nbsp;Generate Tournament Brackets&nbsp;&nbsp;&nbsp;&nbsp;
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </header>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<html>
+<head>
+    <title>Ball Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-image: url('imgs/court.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            padding-top: 30px;
+        }
+        .overlay {
+            background: rgba(0, 4, 10, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding-top: 20px;
+            width: 450px;
+            text-align: center;
+            color: white;
+        }
+        .overlay2 {
+            background: rgba(0, 0, 0, .1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+        .overlay h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .overlay p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .overlay a {
+            display: block;
+            margin: 10px 0;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+        }
+        .overlay .footer {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, .8), #753200);
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            font-size: 12px;
+        }
+        .top, .bot{
+            display: flex; /* Enable flexbox */
+            flex-direction: row; /* Arrange children vertically */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            transition: all 0.5s ease; /* Smooth transition for hover effects */
+
+        }
+        .top{
+            margin-left: 44px;
+        }
+        .bot{
+            margin-left: -100px;
+        }
+        .card {
+            width: 250px;
+            height: 350px;
+            padding: 15px;
+            margin: 25px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, .75), rgba(200, 70, 20, .9));
+            transform: skew(-10deg);
+            position: relative;
+            transition: transform 0.5s ease, width 0.5s ease; /* Transition effects */
+        }
+        .card-image {
+            width: 220px;
+            height: 250px;
+            background: rgba(255, 255, 255, .75);
+            position: relative;
+            overflow: hidden;
+        }
+        .player-image{
+            transform: skew(10deg); 
+            margin-left: -10px;
+            height: 100%; /* Make the player image container take full height */
+            display: flex; /* Enable flexbox for the image container */
+            justify-content: center; /* Center image horizontally */
+        }
+        .player-image img {
+            height: 100%; /* Scale the image to full height */
+            width: auto; /* Maintain aspect ratio */
+            max-width: none;
+            object-fit: contain; /* Optional: maintain aspect ratio */
+        }
+        .card-number {
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+        }
+        .card-footer {
+            position: absolute;
+            bottom: 0;
+            width: 220px;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            padding-bottom: 20px;
+            transform: skew(10deg);
+        }
+
+        .player-details {
+            display: none; /* Initially hide the player details div */
+            transition: opacity 0.5s ease; /* Smooth transition for visibility */
+            position: relative; /* Position it fixed to center on the screen */
+            top: 30%; /* Position from the top */
+            left: 60%; /* Position from the left */
+            transform: translate(-50%, -50%); /* Center the div */
+            width: 75%; /* Set a width for the player details */
+        }
+        
+        
+        /* Optional: Add styles for when player details are visible */
+        .player-details.visible {
+            display: block; /* Ensure it's displayed when visible */
+            opacity: 1; /* Fully visible */
+        }
+
+        .card-container {
+            display: flex; /* Enable flexbox for the card container */
+            flex-direction: column; /* Stack .top and .bot vertically */
+            transition: all 1s ease; /* Smooth transition for hover effects */
+        }
+        .card-container:hover .card {
+            transform: scale(0.7) skew(-10deg); /* Scale down the cards */
+            margin: -35px;
+        }
+        .card-container:hover + .player-details {
+            display: block; /* Show the player details div on hover */
+            opacity: 1; /* Ensure it's fully visible */
+        }
+        
+        .card-container:hover .bot {
+            margin-top: -50px; /* Adjust this value to position .bot next to .top */
+            margin-left: 0px;
+        }
+        
+        /* When hovering over .top, move .bot beside it */
+        .card-container:hover .top {
+            flex-direction: row; /* Align .top cards in a row */
+        }
+        
+        .card-container:hover .bot {
+            display: flex; /* Ensure .bot is displayed as flex */
+            flex-direction: row; /* Align cards in a row */
+        }
+        .card-container:hover .bot {
+            margin-top: 0; /* Reset margin to align with the top */
+        }
+        .card-container:hover {
+            flex-direction: row; /* Change layout to row on hover */
+        }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+    <script>
+        // Load header content
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading the header:', error));
+    </script>
+
+    <h1 class="text-center text-white text-3xl mb-8">Team Players</h1>
+
+    <!-- Card container to hold player cards -->
+    <div class="card-container">
+    <div class="top"></div>
+    <div class="bot"></div>
+</div>
+
+<div class="player-details">
+        <div class="overlay p-8 text-white w-3/4">
+            <h1 class="text-3xl font-bold mb-6">PLAYER DETAILS</h1>
+            <div class="flex">
+                <div class="w-1/2 pr-4">
+                    <div class="bg-black h-64 flex items-center justify-center mb-4">
+                        <img src="imgs/sample_player2.png"/> 
+                    </div>
+                    
+                </div>
+                <div class="w-1/2 pl-4">
+                    <div class="mb-4">
+                        <label for="last-name" class="block mb-2">Player Last name:</label>
+                        <input type="text" id="last-name" class="w-full p-2 text-black" alt="Meyer">
+                    </div>
+                    <div class="mb-4">
+                        <label for="first-name" class="block mb-2">Player First name:</label>
+                        <input type="text" id="first-name" class="w-full p-2 text-black" alt="Brackton">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="birth-date" class="block mb-2">Birth date:</label>
+                            <input type="text" id="birth-date" class="w-full p-2 text-black">
+                        </div>
+                        <div>
+                            <label for="position" class="block mb-2">Position:</label>
+                            <input type="text" id="position" class="w-full p-2 text-black">
+                        </div>
+                        <div>
+                            <label for="weight" class="block mb-2">Weight:</label>
+                            <input type="text" id="weight" class="w-full p-2 text-black">
+                        </div>
+                        <div>
+                            <label for="height" class="block mb-2">Height:</label>
+                            <input type="text" id="height" class="w-full p-2 text-black">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // Extract the team identifier from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const teamId = urlParams.get('team'); // Assuming 'team' is the parameter name
+
+    // Fetch data from the server
+    fetch('get_teams.php')
+        .then(response => response.json())
+        .then(data => {
+            // Ensure you're using 'team.name' and not a non-existent variable like 'TeamName'
+            const teamData = data.find(team => team.name.toLowerCase() === teamId.toLowerCase());
+
+            if (!teamData) {
+                console.error(`No team found with name: ${teamId}`);
+                return;
+            }
+
+            const players = teamData.players;
+            const topContainer = document.querySelector('.top');
+            const botContainer = document.querySelector('.bot');
+
+            // Clear existing content
+            topContainer.innerHTML = '';
+            botContainer.innerHTML = '';
+
+            // Loop through players and create cards
+            players.forEach((player, index) => {
+                // Create the card
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                card.innerHTML = `
+                    <div class="card-image">
+                        <div class="card-number">${player.PlayerJersey || '#'}</div>
+                        <div class="player-image">
+                            <img src="${player.PlayerImage}" alt="${player.PlayerFName} ${player.PlayerLName}">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        ${player.PlayerFName} ${player.PlayerLName}<br>${player.PlayerPosition}
+                    </div>
+                `;
+
+                // Append to the appropriate container
+                if (index % 2 === 0) {
+                    topContainer.appendChild(card);
+                } else {
+                    botContainer.appendChild(card);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
+
+
+
+
+</body>
+</html>

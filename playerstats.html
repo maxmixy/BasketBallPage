@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Player Stats Overview</title>
+    <style>
+        body {
+            background-image: url('imgs/court.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            padding-top: 60px;
+        }
+        .overlay {
+            background: rgba(0, 4, 10, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            margin: auto;
+            width: 90%;
+            padding: 20px;
+        }
+        .table-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin: 20px auto;
+            width: 95%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background-color: #ff6600;
+            color: white;
+        }
+        th, td {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #000;
+        }
+        tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        th {
+            font-size: 0.875rem;
+        }
+        td {
+            font-size: 0.875rem;
+        }
+        .team-name {
+            background-color: #ff6600;
+            color: white;
+            padding: 15px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<div id="header"></div>
+<script>
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading the HTML file:', error));
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const imagePreview = document.getElementById('image-preview');
+            const uploadLabel = document.getElementById('upload-label'); // Get the label element
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden'); // Show the image
+                    uploadLabel.classList.add('hidden'); // Hide the label
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+</script>
+
+<body>
+    <div class="overlay">
+        <div class="table-container">
+            <div class="team-name">Team Name</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>PLAYER</th>
+                        <th>GP</th>
+                        <th>PTS</th>
+                        <th>FG</th>
+                        <th>MFG</th>
+                        <th>AFG%</th>
+                        <th>3PM</th>
+                        <th>3PA</th>
+                        <th>3P%</th>
+                        <th>FT</th>
+                        <th>MFT</th>
+                        <th>AFT%</th>
+                        <th>OREB</th>
+                        <th>DREB</th>
+                        <th>REB</th>
+                        <th>AST</th>
+                        <th>TOV</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>PF</th>
+                        <th>FP</th>
+                        <th>DD2</th>
+                        <th>TD3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Player 1</td>
+                        <td>82</td>
+                        <td>25.4</td>
+                        <td>800</td>
+                        <td>1400</td>
+                        <td>57.1</td>
+                        <td>200</td>
+                        <td>500</td>
+                        <td>40.0</td>
+                        <td>150</td>
+                        <td>200</td>
+                        <td>75.0</td>
+                        <td>50</td>
+                        <td>150</td>
+                        <td>200</td>
+                        <td>8.0</td>
+                        <td>3.0</td>
+                        <td>2.0</td>
+                        <td>1.0</td>
+                        <td>2.5</td>
+                        <td>42.5</td>
+                        <td>15</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Player 2</td>
+                        <td>82</td>
+                        <td>20.1</td>
+                        <td>700</td>
+                        <td>1300</td>
+                        <td>53.8</td>
+                        <td>180</td>
+                        <td>450</td>
+                        <td>40.0</td>
+                        <td>120</td>
+                        <td>160</td>
+                        <td>75.0</td>
+                        <td>45</td>
+                        <td>120</td>
+                        <td>165</td>
+                        <td>6.0</td>
+                        <td>2.5</td>
+                        <td>1.5</td>
+                        <td>1.0</td>
+                        <td>2.0</td>
+                        <td>38.0</td>
+                        <td>10</td>
+                        <td>1</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

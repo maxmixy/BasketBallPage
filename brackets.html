@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Game Bracket Generator</title>
+    <style>
+        body {
+            background-image: url('imgs/court.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            padding-top: 60px;
+        }
+        #bracket-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, .8), #802500);
+            backdrop-filter: blur(5px);
+            border-radius: 5px;
+            padding-top: 20px;
+            margin: auto;
+            width: 40rem;
+            text-align: center;
+            color: white;
+        }
+        #bracket-form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea {
+            background: rgba(230, 230, 230, .3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #bracket-output div {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<div id="header"></div>
+<script>
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading the HTML file:', error));
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const imagePreview = document.getElementById('image-preview');
+            const uploadLabel = document.getElementById('upload-label'); // Get the label element
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden'); // Show the image
+                    uploadLabel.classList.add('hidden'); // Hide the label
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+</script>
+<body>
+    <div id="bracket-container">
+        <h1>Generate Game Brackets</h1>
+        <form id="bracket-form">
+            <label for="team-names">Enter Team Names (comma-separated):</label>
+            <textarea id="team-names" placeholder="e.g., Team A, Team B, Team C"></textarea>
+            <button type="button" id="generate-bracket">Generate Bracket</button>
+        </form>
+        <div id="bracket-output"></div>
+    </div>
+
+    <script>
+        document.getElementById("generate-bracket").addEventListener("click", function() {
+            const teamInput = document.getElementById("team-names").value;
+            const teams = teamInput.split(",").map(team => team.trim()).filter(team => team);
+
+            if (teams.length < 2 || (teams.length & (teams.length - 1)) !== 0) {
+                alert("Please enter a number of teams that's a power of 2 (e.g., 4, 8, 16).");
+                return;
+            }
+
+            let rounds = [];
+            let currentRound = [...teams];
+
+            // Generate rounds
+            while (currentRound.length > 1) {
+                const nextRound = [];
+                for (let i = 0; i < currentRound.length; i += 2) {
+                    nextRound.push(`${currentRound[i]} vs ${currentRound[i + 1]}`);
+                }
+                rounds.push(nextRound);
+                currentRound = nextRound.map(() => "Winner");
+            }
+
+            // Display brackets
+            const bracketOutput = document.getElementById("bracket-output");
+            bracketOutput.innerHTML = "";
+            rounds.forEach((round, index) => {
+                const roundDiv = document.createElement("div");
+                roundDiv.classList.add('new-class');
+                roundDiv.innerHTML = `<h3>Round ${index + 1}</h3><p>${round.join("<br>")}</p>`;
+                bracketOutput.appendChild(roundDiv);
+            });
+        });
+    </script>
+</body>
+</html>

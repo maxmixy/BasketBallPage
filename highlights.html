@@ -1,0 +1,196 @@
+<html>
+<head>
+    <title>Ball Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .skewed {
+            transform: skewX(-30deg);
+        }
+        .unskewed {
+            transform: skewX(30deg);
+            display: inline-block;
+        }
+        body {
+            background-image: url('imgs/court.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            padding-top: 60px;
+        }
+        .overlay {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, .8), #802500);
+            backdrop-filter: blur(5px);
+            border-radius: 5px;
+            padding-top: 20px;
+            margin: auto;
+            width: 300px;
+            text-align: center;
+            color: white;
+        }
+        .overlay2 {
+            background: rgba(0, 0, 0, .1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+        .overlay h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .overlay p {
+            font-size: 14px;
+        }
+        .overlay a {
+            display: block;
+            margin: 10px 0;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+        }
+        .scrollable-container {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            white-space: nowrap; /* Prevent line breaks */
+            width: 90vw;
+            margin-left: -5rem;
+            height: 400px;
+        }
+        /* For Webkit browsers (Chrome, Safari) */
+        .scrollable-container::-webkit-scrollbar {
+            height: 10px; /* Height of the scrollbar */
+        }
+
+        .scrollable-container::-webkit-scrollbar-thumb {
+            background: #888; /* Color of the scrollbar thumb */
+            border-radius: 5px; /* Rounded corners for the scrollbar thumb */
+        }
+
+        .scrollable-container::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Color of the scrollbar thumb on hover */
+        }
+    </style>
+</head>
+<div id="header"></div>
+<script>
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading the HTML file:', error));
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const imagePreview = document.getElementById('image-preview');
+            const uploadLabel = document.getElementById('upload-label'); // Get the label element
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden'); // Show the image
+                    uploadLabel.classList.add('hidden'); // Hide the label
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+</script>
+<body>
+  <div class="container mx-auto">
+   <!-- Top Banner -->
+   <div class="unskewed bg-orange-500 p-2 padding-left: 10rem; mx: auto;" style="width: 25%">
+    <h1 class="skewed text-white text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Team Name</h1>
+   </div>
+   <!-- First Row of Images -->
+
+   <div class="scrollable-container" >
+    <div class="flex justify-center space-x-4 mt-4">
+
+        <div class="relative">
+            
+                <h1 class="unskewed text-black text-xl font-bold" style="margin-left: 55rem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+        
+        </div>
+
+        <div class="relative">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/SiW5oTl_inA?si=ELgYqV1VRxiiSBaX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+         <div class="skewed bg-black bg-opacity-90 absolute bottom-0 transform translate-x-1/4 translate-y-3/4 rounded-lg" style="margin-left: -6rem; margin-bottom: -20px; width: auto; max-height: 200px;">
+            <img alt="Player holding basketball" class="unskewed object-cover"  src="imgs/sample_player2.png" style="height: 180px; max-width: 200px; position: relative; overflow: hidden; margin-left: 2rem;"/>
+            <div class="bg-white bg-opacity-90 absolute bottom-0 " style="margin-left: 4rem;  height: 30px;">
+                <h1 class="unskewed text-black text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Player Name</h1>
+             </div>
+         </div>
+        </div>
+
+        <div class="relative">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/SiW5oTl_inA?si=ELgYqV1VRxiiSBaX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+         <div class="skewed bg-black bg-opacity-90 absolute bottom-0 transform skew-x-30 translate-x-1/4 translate-y-3/4 rounded-lg" style="margin-left: -6rem; margin-bottom: -20px; width: auto; max-height: 200px;">
+            <img alt="Player holding basketball" class="unskewed object-cover"  src="imgs/sample_player2.png" style="height: 180px; max-width: 200px; position: relative; overflow: hidden; margin-left: 2rem;"/>
+            <div class="bg-white bg-opacity-90 absolute bottom-0 " style="margin-left: 4rem;  height: 30px;">
+                <h1 class="unskewed text-black text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Player Name</h1>
+             </div>
+         </div>
+         
+        </div>
+        <div class="relative">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/SiW5oTl_inA?si=ELgYqV1VRxiiSBaX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+         <div class="skewed bg-black bg-opacity-90 absolute bottom-0 transform translate-x-1/4 translate-y-3/4 rounded-lg" style="margin-left: -6rem; margin-bottom: -20px; width: auto; max-height: 200px;">
+            <img alt="Player holding basketball" class="unskewed object-cover"  src="imgs/sample_player2.png" style="height: 180px; max-width: 200px; position: relative; overflow: hidden; margin-left: 2rem;"/>
+            <div class="bg-white bg-opacity-90 absolute bottom-0 " style="margin-left: 4rem;  height: 30px;">
+                <h1 class="unskewed text-black text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Player Name</h1>
+             </div>
+         </div>
+        </div>
+    
+        <div class="relative">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/SiW5oTl_inA?si=ELgYqV1VRxiiSBaX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+         <div class="skewed bg-black bg-opacity-90 absolute bottom-0 transform translate-x-1/4 translate-y-3/4 rounded-lg" style="margin-left: -6rem; margin-bottom: -20px; width: auto; max-height: 200px;">
+            <img alt="Player holding basketball" class="unskewed object-cover"  src="imgs/sample_player2.png" style="height: 180px; max-width: 200px; position: relative; overflow: hidden; margin-left: 2rem;"/>
+            <div class="bg-white bg-opacity-90 absolute bottom-0 " style="margin-left: 4rem;  height: 30px;">
+                <h1 class="unskewed text-black text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Player Name</h1>
+             </div>
+         </div>
+        </div>
+    
+       </div>
+   </div>
+
+   
+   <!-- Bottom Banner -->
+   <div class="unskewed bg-orange-500 p-2 padding-left: 10rem; mx: auto;" style="width: 25%; margin-top: 4rem;">
+    <h1 class="skewed text-white text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Team Name</h1>
+   </div>
+   <!-- First Row of Images -->
+   <div class="flex justify-center space-x-4 mt-4">
+    <div class="relative">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/SiW5oTl_inA?si=ELgYqV1VRxiiSBaX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+     <div class="skewed bg-black bg-opacity-90 absolute bottom-0 transform translate-x-1/4 translate-y-3/4 rounded-lg" style="margin-left: -6rem; margin-bottom: -20px; width: auto; max-height: 200px;">
+        <img alt="Player holding basketball" class="unskewed object-cover"  src="imgs/sample_player2.png" style="height: 180px; max-width: 200px; position: relative; overflow: hidden; margin-left: 2rem;"/>
+        <div class="bg-white bg-opacity-90 absolute bottom-0 " style="margin-left: 4rem;  height: 30px;">
+            <h1 class="unskewed text-black text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Player Name</h1>
+         </div>
+     </div>
+     
+    </div>
+    
+   </div>
+   <div class="unskewed bg-orange-500 p-2 padding-left: 10rem; mx: auto;" style="width: 25%; margin-top: 4rem;">
+    <h1 class="skewed text-white text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Team Name</h1>
+   </div>
+   <!-- First Row of Images -->
+   <div class="flex justify-center space-x-4 mt-4">
+    <div class="relative">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/SiW5oTl_inA?si=ELgYqV1VRxiiSBaX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+     <div class="skewed bg-black bg-opacity-90 absolute bottom-0 transform translate-x-1/4 translate-y-3/4 rounded-lg" style="margin-left: -6rem; margin-bottom: -20px; width: auto; max-height: 200px;">
+        <img alt="Player holding basketball" class="unskewed object-cover"  src="imgs/sample_player2.png" style="height: 180px; max-width: 200px; position: relative; overflow: hidden; margin-left: 2rem;"/>
+        <div class="bg-white bg-opacity-90 absolute bottom-0 " style="margin-left: 4rem;  height: 30px;">
+            <h1 class="unskewed text-black text-xl font-bold">&nbsp;&nbsp;&nbsp;&nbsp;Player Name</h1>
+         </div>
+     </div>
+     
+    </div>
+ </body>
+</head>
+</html>
